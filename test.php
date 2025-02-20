@@ -1,6 +1,6 @@
 <?php
-// include "functions.php";
-// sendMail("");
+include "functions.php";
+sendMail("ahansal2005@gmail.com","test code php", "hh wa sla3");
 // use PHPMailer\PHPMailer\PHPMailer;
 // use PHPMailer\PHPMailer\Exception;
 
