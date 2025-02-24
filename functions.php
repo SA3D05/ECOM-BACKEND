@@ -171,9 +171,6 @@ function sendMail($to, $subject, $message)
 {
 
     $headers = "From: SA3D <anohamed05@gmail.com>\r\n";
-    if (mail($to, $subject, $message, $headers)) {
-        echo "Email sent successfully!";
-    } else {
-        echo "Failed to send email.";
-    }
+
+    mail($to, $subject, $message, $headers);
 }
