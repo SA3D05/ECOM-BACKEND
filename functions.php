@@ -162,10 +162,26 @@ function checkAuthenticate()
     }
 }
 
+function printSuccess()
+{
+    echo json_encode(array("status" => "success"));
+}
+
 function printFailure()
 {
     echo json_encode(array("status" => "failure"));
 }
+
+function handlingResult($count)
+{
+    if ($count > 0) {
+        printSuccess();
+    } else {
+        printFailure();
+    }
+}
+
+
 
 function sendMail($to, $subject, $message)
 {

@@ -6,7 +6,7 @@ include "../connect.php";
 $userName       =    filterRequest("username");
 $email          =    filterRequest("email");
 $phone          =    filterRequest("phone");
-$password       =    sha1("password");
+$password       =    sha1(filterRequest("password"));
 $verify_code    =    rand(10000, 99999);
 
 $stmt = $con->prepare("SELECT * FROM `users` WHERE `user_email` = ? OR `user_phone` = ? ");
