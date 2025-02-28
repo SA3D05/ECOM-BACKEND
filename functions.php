@@ -6,20 +6,34 @@ function filterRequest($requestname)
     return  htmlspecialchars(strip_tags($_POST[$requestname]));
 }
 
-function getAllData($table, $where, $values = null)
+function getAllData($table, $where = null, $values = null,  $json = true)
 {
     global $con;
     $data = array();
-    $stmt = $con->prepare("SELECT  * FROM $table WHERE   $where ");
+    if ($where == null) {
+        $stmt = $con->prepare("SELECT  * FROM $table ");
+    } else {
+        $stmt = $con->prepare("SELECT  * FROM $table WHERE   $where ");
+    }
+
     $stmt->execute($values);
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $count  = $stmt->rowCount();
-    if ($count > 0) {
-        echo json_encode(array("status" => "success", "data" => $data));
+
+    if ($json) {
+        if ($count > 0) {
+            printSuccess($data);
+        } else {
+            printFailure();
+        }
+        return $count;
     } else {
-        echo json_encode(array("status" => "failure"));
+        if ($count > 0) {
+            return $data;
+        } else {
+            printFailure();
+        }
     }
-    return $count;
 }
 
 function getData($table, $where, $values = null)
@@ -31,9 +45,9 @@ function getData($table, $where, $values = null)
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
     $count  = $stmt->rowCount();
     if ($count > 0) {
-        echo json_encode(array("status" => "success", "data" => $data));
+        printSuccess($data);
     } else {
-        echo json_encode(array("status" => "failure"));
+        printFailure();
     }
     return $count;
 }
@@ -106,9 +120,9 @@ function updateData($table, $data, $where, $json = true)
     $count = $stmt->rowCount();
     if ($json == true) {
         if ($count > 0) {
-            echo json_encode(array("status" => "success"));
+            printSuccess();
         } else {
-            echo json_encode(array("status" => "failure"));
+            printFailure();
         }
     }
     return $count;
@@ -122,9 +136,9 @@ function deleteData($table, $where, $json = true)
     $count = $stmt->rowCount();
     if ($json == true) {
         if ($count > 0) {
-            echo json_encode(array("status" => "success"));
+            printSuccess();
         } else {
-            echo json_encode(array("status" => "failure"));
+            printFailure();
         }
     }
     return $count;
@@ -178,9 +192,13 @@ function checkAuthenticate()
     }
 }
 
-function printSuccess()
+function printSuccess($data = null)
 {
-    echo json_encode(array("status" => "success"));
+    if (!empty($data)) {
+        echo json_encode(array("status" => "success", "data" => $data));
+    } else {
+        echo json_encode(array("status" => "success"));
+    }
 }
 
 function printFailure()
