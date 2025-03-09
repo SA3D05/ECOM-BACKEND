@@ -1,0 +1,20 @@
+import xml.etree.ElementTree as ET
+
+# Load the SVG file
+tree = ET.parse('icons.svg')
+root = tree.getroot()
+
+# Namespace handling (if needed)
+namespace = {'svg': 'http://www.w3.org/2000/svg'}
+
+# Find all icons (assuming they are in <g> tags)
+icons = root.findall('.//svg:g', namespace)
+
+for i, icon in enumerate(icons):
+    # Create a new SVG file for each icon
+    new_svg = ET.Element('svg', width='24', height='24', xmlns='http://www.w3.org/2000/svg')
+    new_svg.append(icon)
+
+    # Write to a new SVG file
+    tree = ET.ElementTree(new_svg)
+    tree.write(f'icon_{i}.svg')

@@ -2,7 +2,7 @@
 include "functions.php";
 $dsn = "mysql:host=localhost;dbname=ecom_db";
 $user = "root";
-$pass = "";
+$pass = "1234";
 $option = array(     
    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES UTF8"
 );

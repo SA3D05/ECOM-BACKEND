@@ -1,0 +1,9 @@
+from svgpathtools import svg2paths, wsvg
+
+# Load the SVG file
+paths, attributes = svg2paths('your_file.svg')
+
+# Iterate through each path and save as a separate SVG
+for i, (path, attr) in enumerate(zip(paths, attributes)):
+    # Create a new SVG file for each icon
+    wsvg([path], attributes=[attr], filename=f'icon_{i}.svg')

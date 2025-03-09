@@ -1,0 +1,21 @@
+from lxml import etree
+
+# Load the SVG file
+with open('icons.svg', 'r') as file:
+    svg_content = file.read()
+
+# Parse the SVG content
+svg_tree = etree.fromstring(svg_content)
+
+# Find all icons (assuming they are in <g> tags)
+icons = svg_tree.findall('.//{http://www.w3.org/2000/svg}g')
+
+# Save each icon as a separate SVG file
+for i, icon in enumerate(icons):
+    # Create a new SVG element
+    new_svg = etree.Element('{http://www.w3.org/2000/svg}svg', width='100', height='100')  # Adjust size as needed
+    new_svg.append(icon)
+
+    # Write to a new SVG file
+    with open(f'icon_{i}.svg', 'wb') as icon_file:
+        icon_file.write(etree.tostring(new_svg))

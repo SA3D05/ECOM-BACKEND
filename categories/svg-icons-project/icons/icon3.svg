@@ -1,0 +1,36 @@
+To split icons from a single SVG file into individual SVG files, you can follow these general steps:
+
+1. **Open the SVG File**: Use a vector graphics editor like Adobe Illustrator, Inkscape, or an online SVG editor.
+
+2. **Identify Icons**: Locate each icon within the SVG file. Icons are typically grouped or defined by `<g>` tags or individual `<path>` elements.
+
+3. **Isolate Each Icon**:
+   - Select an icon or group of elements that make up the icon.
+   - Copy the selected elements.
+
+4. **Create New SVG Files**:
+   - Open a new document in your vector graphics editor.
+   - Paste the copied icon into the new document.
+   - Ensure that the new SVG file has the necessary `<svg>` tags and attributes (like width, height, viewBox, etc.).
+
+5. **Save the New SVG File**: Save the new document as an SVG file, giving it a meaningful name that represents the icon.
+
+6. **Repeat**: Repeat the process for each icon in the original SVG file.
+
+### Example Using Inkscape:
+
+1. Open your SVG file in Inkscape.
+2. Use the "Select and Transform Objects" tool (arrow icon) to select an icon.
+3. Copy the selected icon (Ctrl+C).
+4. Create a new document (File > New).
+5. Paste the icon (Ctrl+V).
+6. Adjust the canvas size if necessary (File > Document Properties).
+7. Save the new file (File > Save As) and choose SVG format.
+8. Name the file appropriately and repeat for each icon.
+
+### Automated Approach:
+
+If you have programming skills, you can automate this process using a script. For example, using Python with libraries like `svgpathtools` or `lxml` to parse the SVG file and extract each icon into separate files.
+
+### Note:
+If you provide the SVG file or its content, I can guide you through the process more specifically or help with a script. However, I cannot manipulate files directly.
