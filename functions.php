@@ -16,6 +16,7 @@ function getAllData($table, $where = null, $values = null,  $json = true)
         $stmt = $con->prepare("SELECT  * FROM $table WHERE   $where ");
     }
 
+
     $stmt->execute($values);
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $count  = $stmt->rowCount();
@@ -51,33 +52,57 @@ function getData($table, $where, $values = null)
     }
     return $count;
 }
+function getSpeceficData($select = null, $table, $where, $values = null, $json = null)
+{
+    global $con;
+    $data = array();
+    if ($select == null) {
+        $stmt = $con->prepare("SELECT  * FROM $table WHERE   $where ");
+    } else {
+
+        $stmt = $con->prepare("SELECT  $select FROM $table WHERE   $where ");
+    }
+
+
+    $stmt->execute($values);
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $count  = $stmt->rowCount();
+
+    if ($json) {
+        if ($count > 0) {
+            printSuccess($data);
+        } else {
+            printFailure();
+        }
+        return $count;
+    } else {
+        if ($count > 0) {
+            return $data;
+        } else {
+            printFailure();
+        }
+    }
+}
 
 function insertData($con, $table, $data, $json = true)
 {
     try {
-        // التحقق من أن البيانات غير فارغة
         if (empty($data)) {
             throw new Exception("No data provided for insertion.");
         }
-
-        // تحضير أسماء الأعمدة والقيم
         $fields = implode(',', array_keys($data));
         $placeholders = ':' . implode(',:', array_keys($data));
 
-        // إنشاء الاستعلام SQL
         $sql = "INSERT INTO $table ($fields) VALUES ($placeholders)";
 
-        // تحضير وتنفيذ الاستعلام
         $stmt = $con->prepare($sql);
         foreach ($data as $f => $v) {
             $stmt->bindValue(':' . $f, $v);
         }
         $stmt->execute();
 
-        // التحقق من عدد الصفوف المتأثرة
         $count = $stmt->rowCount();
 
-        // إرجاع النتيجة كـ JSON إذا كان المطلوب
         if ($json) {
             if ($count > 0) {
                 echo json_encode(["status" => "success", "message" => "Data inserted successfully.", "inserted_rows" => $count]);
@@ -86,16 +111,13 @@ function insertData($con, $table, $data, $json = true)
             }
         }
 
-        // إرجاع عدد الصفوف المتأثرة
         return $count;
     } catch (PDOException $e) {
-        // معالجة أخطاء PDO
         if ($json) {
             echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
         }
         return 0;
     } catch (Exception $e) {
-        // معالجة الأخطاء العامة
         if ($json) {
             echo json_encode(["status" => "error", "message" => $e->getMessage()]);
         }
